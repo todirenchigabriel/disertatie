@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container } from './styled-components';
 import ReactFC from 'react-fusioncharts';
 
-class Map extends Component {
+export default class Map extends Component {
   render() {
     const { ordersTrendRegion } = this.props;
     return (
@@ -51,4 +51,3 @@ class Map extends Component {
   }
 }
 
-export default Map;

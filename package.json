@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.2.1",
+    "classnames": "^2.2.6",
     "fusioncharts": "^3.13.3-sr.1",
     "fusionmaps": "^3.13.1-sr.1",
     "react": "^16.7.0",
