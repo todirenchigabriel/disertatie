@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container } from './styled-components';
+import { Container } from '../helpers/styled-components';
 const classNames = require('classnames');
 
 export default class Card extends Component {
@@ -29,12 +29,12 @@ export default class Card extends Component {
               <>
                 {value}
                 <span className='text-medium pl-2 is-dark-text-light'>
-                  views
+                  vizualizări
                 </span>
               </>
             ) : (
               <>
-                <span className='text-large pr-1'>$</span>
+                <span className='text-large pr-1'>RON </span>
                 {value}
               </>
             )}
@@ -43,20 +43,4 @@ export default class Card extends Component {
       </Container>
     );
   }
-}
-
-{
-  /* <Container className='col-md-4 col-lg-3 is-light-text mb-4'>
-  <Container className='card grid-card is-card-dark'>
-    <Container className='card-heading mb-3'>
-      <Container className='is-dark-text-light letter-spacing text-small'>
-        Product Views
-      </Container>
-    </Container>
-    <Container className='card-value pt-4 text-x-large'>
-      {this.state.productViews}
-      <span className='text-medium pl-2 is-dark-text-light'>views</span>
-    </Container>
-  </Container>
-</Container>; */
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container } from './styled-components';
+import { Container } from '../helpers/styled-components';
 import ReactFC from 'react-fusioncharts';
 const classNames = require('classnames');
 

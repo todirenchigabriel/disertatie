@@ -1,29 +1,37 @@
 import React, { Component } from 'react';
-import { Container, Nav } from './styled-components';
+import { Container, Nav } from '../helpers/styled-components';
 
 // fusioncharts
 import FusionCharts from 'fusioncharts';
 import Charts from 'fusioncharts/fusioncharts.charts';
 import Maps from 'fusioncharts/fusioncharts.maps';
-import USARegion from 'fusionmaps/maps/es/fusioncharts.usaregion';
 import RomaniaMap from 'fusionmaps/maps/es/fusioncharts.romania.js';
 import ReactFC from 'react-fusioncharts';
-import './charts-theme';
+import '../helpers/charts-theme';
 
-import config from './config';
-import Dropdown from 'react-dropdown';
-import formatNum from './format-number';
+// helpers
+import config from '../config';
+import formatNum from '../helpers/format-number';
 
-import UserImg from '../assets/images/user-img-placeholder.jpeg';
-
+// components
+import Navbar from './Navbar';
+import Control from './Control';
 import Map from './Map';
 import BarChart from './BarChart';
 import Doghnut from './Doghnut';
 import Card from './Card';
 
-ReactFC.fcRoot(FusionCharts, Charts, Maps, USARegion);
+ReactFC.fcRoot(FusionCharts, Charts, Maps, RomaniaMap);
 
-const url = `https://sheets.googleapis.com/v4/spreadsheets/${config.spreadsheetId}/values:batchGet?ranges=Sheet1&majorDimension=ROWS&key=${config.apiKey}`;
+// const url = `https://sheets.googleapis.com/v4/spreadsheets/${config.spreadsheetId}/values:batchGet?ranges=Sheet1&majorDimension=ROWS&key=${config.apiKey}`;
+const url = `https://sheets.googleapis.com/v4/spreadsheets/1VzWaoRbjMH20v0SUjFkmPZGvcvBDrPhu76A3O78aB8A/values:batchGet?ranges=Sheet1&majorDimension=ROWS&key=${config.apiKey}`;
+
+const getMapObject = (id, value) => {
+  return {
+    id,
+    value
+  };
+};
 
 class App extends Component {
   constructor() {
@@ -32,9 +40,10 @@ class App extends Component {
       items: [],
       dropdownOptions: [],
       selectedValue: null,
-      amazonRevenue: null,
-      ebayRevenue: null,
-      etsyRevenue: null,
+      okaziiRevenue: null,
+      OLXRevenue: null,
+      laJumateRevenue: null,
+      publi24Revenue: null,
       totalRevenue: null,
       productViews: null,
       purchaseRate: ' ',
@@ -51,11 +60,13 @@ class App extends Component {
 
     // kpi's
     // amazon revenue
-    let amazonRevenue = 0;
+    let okaziiRevenue = 0;
+    // new rev
+    let laJumateRevenue = 0;
     //ebay revenue
-    let ebayRevenue = 0;
+    let OLXRevenue = 0;
     // etsy revenue
-    let etsyRevenue = 0;
+    let publi24Revenue = 0;
     // total revenue
     let totalRevenue = 0;
     // product views
@@ -70,81 +81,146 @@ class App extends Component {
     let ordersTrendStore = [];
     // order trend by region
     let ordersTrendRegion = [];
-    let orderesTrendnw = 0;
-    let orderesTrendsw = 0;
-    let orderesTrendc = 0;
-    let orderesTrendne = 0;
-    let orderesTrendse = 0;
-
     let selectedValue = null;
-
+    let orders_AB = 0;
+    let orders_AR = 0;
+    let orders_AG = 0;
+    let orders_BC = 0;
+    let orders_BH = 0;
+    let orders_BN = 0;
+    let orders_BT = 0;
+    let orders_BR = 0;
+    let orders_BV = 0;
+    let orders_BI = 0;
+    let orders_BZ = 0;
+    let orders_CS = 0;
+    let orders_CJ = 0;
+    let orders_CT = 0;
+    let orders_CV = 0;
+    let orders_DB = 0;
+    let orders_DJ = 0;
+    let orders_GL = 0;
+    let orders_GJ = 0;
+    let orders_HR = 0;
+    let orders_HD = 0;
+    let orders_IL = 0;
+    let orders_IS = 0;
+    let orders_MM = 0;
+    let orders_MH = 0;
+    let orders_MS = 0;
+    let orders_NT = 0;
+    let orders_OT = 0;
+    let orders_PH = 0;
+    let orders_SJ = 0;
+    let orders_SM = 0;
+    let orders_SB = 0;
+    let orders_SV = 0;
+    let orders_TR = 0;
+    let orders_TM = 0;
+    let orders_TL = 0;
+    let orders_VS = 0;
+    let orders_VL = 0;
+    let orders_VN = 0;
+    let orders_CL = 0;
+    let orders_GR = 0;
+    let orders_IF = 0;
     for (let i = 0; i < arrLen; i++) {
       if (arg === arr[i]['month']) {
-        if (arr[i]['source'] === 'AM') {
-          amazonRevenue += parseInt(arr[i].revenue);
+        if (arr[i]['source'] === 'Okazii') {
+          okaziiRevenue += parseInt(arr[i].revenue);
           ordersTrendStore.push({
-            label: 'Amazon',
+            label: 'Okazii',
             value: arr[i].orders,
             displayValue: `${arr[i].orders} orders`
           });
-        } else if (arr[i]['source'] === 'EB') {
-          ebayRevenue += parseInt(arr[i].revenue);
+        } else if (arr[i]['source'] === 'OLX') {
+          OLXRevenue += parseInt(arr[i].revenue);
           ordersTrendStore.push({
-            label: 'Ebay',
+            label: 'OLX',
             value: arr[i].orders,
             displayValue: `${arr[i].orders} orders`
           });
-        } else if (arr[i]['source'] === 'ET') {
-          etsyRevenue += parseInt(arr[i].revenue);
+        } else if (arr[i]['source'] === 'Publi24') {
+          publi24Revenue += parseInt(arr[i].revenue);
           ordersTrendStore.push({
-            label: 'Etsy',
+            label: 'Publi24',
+            value: arr[i].orders,
+            displayValue: `${arr[i].orders} orders`
+          });
+        } else if (arr[i]['source'] === 'LaJumate') {
+          laJumateRevenue += parseInt(arr[i].revenue);
+          ordersTrendStore.push({
+            label: 'LaJumate',
             value: arr[i].orders,
             displayValue: `${arr[i].orders} orders`
           });
         }
         productViews += parseInt(arr[i].product_views);
-        purchaseRate += parseInt(arr[i].purchase_rate / 3);
-        checkoutRate += parseInt(arr[i].checkout_rate / 3);
-        abandonedRate += parseInt(arr[i].abandoned_rate / 3);
-        orderesTrendnw += parseInt(arr[i].orders_nw);
-        orderesTrendsw += parseInt(arr[i].orders_sw);
-        orderesTrendc += parseInt(arr[i].orders_c);
-        orderesTrendne += parseInt(arr[i].orders_ne);
-        orderesTrendse += parseInt(arr[i].orders_se);
+        purchaseRate += parseInt(arr[i].purchase_rate / 4);
+        checkoutRate += parseInt(arr[i].checkout_rate / 4);
+        abandonedRate += parseInt(arr[i].abandoned_rate / 4);
+
+        orders_AB += parseInt(arr[i].orders_AB);
+        orders_AR += parseInt(arr[i].orders_AR);
+        orders_AG += parseInt(arr[i].orders_AG);
+        orders_BC += parseInt(arr[i].orders_BC);
+        orders_BH += parseInt(arr[i].orders_BH);
+        orders_BN += parseInt(arr[i].orders_BN);
+        orders_BT += parseInt(arr[i].orders_BT);
+        orders_BR += parseInt(arr[i].orders_BR);
+        orders_BV += parseInt(arr[i].orders_BV);
+        orders_BI += parseInt(arr[i].orders_BI);
+        orders_BZ += parseInt(arr[i].orders_BZ);
+        orders_CS += parseInt(arr[i].orders_CS);
+        orders_CJ += parseInt(arr[i].orders_CJ);
+        orders_CT += parseInt(arr[i].orders_CT);
+        orders_CV += parseInt(arr[i].orders_CV);
+        orders_DB += parseInt(arr[i].orders_DB);
+        orders_DJ += parseInt(arr[i].orders_DJ);
+        orders_GL += parseInt(arr[i].orders_GL);
+        orders_GJ += parseInt(arr[i].orders_GJ);
+        orders_HR += parseInt(arr[i].orders_HR);
+        orders_HD += parseInt(arr[i].orders_HD);
+        orders_IL += parseInt(arr[i].orders_IL);
+        orders_IS += parseInt(arr[i].orders_IS);
+        orders_MM += parseInt(arr[i].orders_MM);
+        orders_MH += parseInt(arr[i].orders_MH);
+        orders_MS += parseInt(arr[i].orders_MS);
+        orders_NT += parseInt(arr[i].orders_NT);
+        orders_OT += parseInt(arr[i].orders_OT);
+        orders_PH += parseInt(arr[i].orders_PH);
+        orders_SJ += parseInt(arr[i].orders_SJ);
+        orders_SM += parseInt(arr[i].orders_SM);
+        orders_SB += parseInt(arr[i].orders_SB);
+        orders_SV += parseInt(arr[i].orders_SV);
+        orders_TR += parseInt(arr[i].orders_TR);
+        orders_TM += parseInt(arr[i].orders_TM);
+        orders_TL += parseInt(arr[i].orders_TL);
+        orders_VS += parseInt(arr[i].orders_VS);
+        orders_VL += parseInt(arr[i].orders_VL);
+        orders_VN += parseInt(arr[i].orders_VN);
+        orders_CL += parseInt(arr[i].orders_CL);
+        orders_GR += parseInt(arr[i].orders_GR);
+        orders_IF += parseInt(arr[i].orders_IF);
       }
     }
 
-    totalRevenue = amazonRevenue + ebayRevenue + etsyRevenue;
-    ordersTrendRegion.push(
-      {
-        id: '01',
-        value: orderesTrendne
-      },
-      {
-        id: '02',
-        value: orderesTrendnw
-      },
-      {
-        id: '03',
-        value: orderesTrendse
-      },
-      {
-        id: '04',
-        value: orderesTrendsw
-      },
-      {
-        id: '05',
-        value: orderesTrendc
-      }
-    );
+    totalRevenue =
+      okaziiRevenue + OLXRevenue + publi24Revenue + laJumateRevenue;
+
+    ordersTrendRegion.push({
+      id: '01',
+      value: orders_AB
+    });
 
     selectedValue = arg;
 
     // setting state
     this.setState({
-      amazonRevenue: formatNum(amazonRevenue),
-      ebayRevenue: formatNum(ebayRevenue),
-      etsyRevenue: formatNum(etsyRevenue),
+      okaziiRevenue: formatNum(okaziiRevenue),
+      OLXRevenue: formatNum(OLXRevenue),
+      publi24Revenue: formatNum(publi24Revenue),
+      laJumateRevenue: formatNum(laJumateRevenue),
       totalRevenue: formatNum(totalRevenue),
       productViews: formatNum(productViews),
       purchaseRate: purchaseRate,
@@ -161,12 +237,12 @@ class App extends Component {
     this.setState({ selectedValue: event.value });
   };
 
+  // this is fine
   componentDidMount() {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
         let batchRowValues = data.valueRanges[0].values;
-
         const rows = [];
         for (let i = 1; i < batchRowValues.length; i++) {
           let rowObject = {};
@@ -178,7 +254,7 @@ class App extends Component {
 
         // dropdown options
         let dropdownOptions = [];
-
+        // debugger
         for (let i = 0; i < rows.length; i++) {
           dropdownOptions.push(rows[i].month);
         }
@@ -189,9 +265,9 @@ class App extends Component {
           {
             items: rows,
             dropdownOptions: dropdownOptions,
-            selectedValue: 'Jan 2019'
+            selectedValue: dropdownOptions[0]
           },
-          () => this.getData('Jan 2019')
+          () => this.getData(dropdownOptions[0])
         );
       });
   }
@@ -200,67 +276,53 @@ class App extends Component {
     return (
       <Container>
         {/* static navbar - top */}
-        <Nav className='navbar navbar-expand-lg fixed-top is-white is-dark-text'>
-          <Container className='navbar-brand h1 mb-0 text-large font-medium'>
-            Online Retail Dashboard
-          </Container>
-          <Container className='navbar-nav ml-auto'>
-            <Container className='user-detail-section'>
-              <span className='pr-2'>Hi, Sean</span>
-              <span className='img-container'>
-                <img src={UserImg} className='rounded-circle' alt='user' />
-              </span>
-            </Container>
-          </Container>
-        </Nav>
+        <Navbar username='Gabriel' />
 
         {/* static navbar - bottom */}
-        <Nav className='navbar fixed-top nav-secondary is-dark is-light-text'>
-          <Container className='text-medium'>Summary</Container>
-          <Container className='navbar-nav ml-auto'>
-            <Dropdown
-              className='pr-2 custom-dropdown'
-              options={this.state.dropdownOptions}
-              onChange={this.updateDashboard}
-              value={this.state.selectedValue}
-              placeholder='Select an option'
-            />
-          </Container>
-        </Nav>
+        <Control
+          dropdownOptions={this.state.dropdownOptions}
+          updateDashboard={this.updateDashboard}
+          selectedValue={this.state.selectedValue}
+        />
 
-        {/* content area start */}
         <Container className='container-fluid pr-5 pl-5 pt-5 pb-5'>
           {/* row 1 - revenue */}
           <Container className='row'>
             <Card
-              label='Total Revenue'
-              value={this.state.totalRevenue}
-              hasLogo={false}
-            />
-            <Card
-              label='Revenue from Amazon'
-              value={this.state.amazonRevenue}
+              label='Venit Okazii'
+              value={this.state.okaziiRevenue}
               className='fa-amazon'
               hasLogo={true}
             />
             <Card
-              label='Revenue from Ebay'
-              value={this.state.ebayRevenue}
+              label='Venit OLX'
+              value={this.state.OLXRevenue}
               className='fa-ebay'
               hasLogo={true}
             />
             <Card
-              label='Revenue from Etsy'
-              value={this.state.etsyRevenue}
+              label='Venit Publi24'
+              value={this.state.publi24Revenue}
               className='fa-etsy'
               hasLogo={true}
+            />
+            <Card
+              label='Venit LaJumate'
+              value={this.state.laJumateRevenue}
+              className='fa-etsy'
+              hasLogo={true}
+            />
+            <Card
+              label='Venit Total'
+              value={this.state.totalRevenue}
+              hasLogo={false}
             />
           </Container>
 
           {/* row 2 - conversion */}
           <Container className='row'>
             <Card
-              label='Product Views'
+              label='Vizualizări prodse'
               value={this.state.productViews}
               hasLogo={false}
               isViews={true}
@@ -270,18 +332,18 @@ class App extends Component {
               <Container className='card is-card-dark chart-card'>
                 <Container className='row full-height'>
                   <Doghnut
-                    caption={'Purchase Rate'}
+                    caption={'Rata de achiziție'}
                     value={this.state.purchaseRate}
                     paletteColors={'3B70C4, #000000'}
                   />
                   <Doghnut
-                    caption={'Checkout Rate'}
+                    caption={'Rata produse în coș'}
                     value={this.state.checkoutRate}
                     paletteColors={'#41B6C4, #000000'}
                     className='border-left border-right'
                   />
                   <Doghnut
-                    caption={'Abandoned Cart Rate'}
+                    caption={'Abandon Coș'}
                     value={this.state.abandonedRate}
                     paletteColors={'#EDF8B1, #000000'}
                   />
