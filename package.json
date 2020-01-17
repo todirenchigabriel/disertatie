@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "antd": "^3.26.7",
     "bootstrap": "^4.2.1",
     "classnames": "^2.2.6",
     "fusioncharts": "^3.13.3-sr.1",

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from '../helpers/styled-components';
 import ReactFC from 'react-fusioncharts';
-// import mockMapData from '../mocks/mapsData';
 
 export default class Map extends Component {
   render() {
@@ -10,45 +9,44 @@ export default class Map extends Component {
       <Container className='col-md-6 mb-4'>
         <Container className='card is-card-dark chart-card'>
           <Container className='chart-container large full-height'>
-          <ReactFC
-          {...{
-            type: 'romania',
-            width: '100%',
-            height: '100%',
-            dataFormat: 'json',
-            containerBackgroundOpacity: '0',
-            dataEmptyMessage: 'Loading Data...',
-            dataSource: {
-              chart: {
-                theme: 'ecommerce',
-                caption: 'Orders Trend',
-                subCaption: 'By Region'
-              },
-              colorrange: {
-                code: '#F64F4B',
-                minvalue: '0',
-                gradient: '1',
-                color: [
-                  {
-                    minValue: '10',
-                    maxvalue: '25',
-                    code: '#a18cd1'
+            <ReactFC
+              {...{
+                type: 'romania',
+                width: '100%',
+                height: '100%',
+                dataFormat: 'json',
+                containerBackgroundOpacity: '0',
+                dataEmptyMessage: 'Loading Data...',
+                dataSource: {
+                  chart: {
+                    theme: 'ecommerce',
+                    caption: 'Tendințe vânzări',
+                    subCaption: 'pe județ'
                   },
-                  {
-                    minvalue: '25',
-                    maxvalue: '3000',
-                    code: '#fbc2eb'
-                  }
-                ]
-              },
-              data: ordersTrendRegion
-            }
-          }}
-        />
+                  colorrange: {
+                    code: '#F64F4B',
+                    minvalue: '0',
+                    gradient: '1',
+                    color: [
+                      {
+                        minValue: '10',
+                        maxvalue: '25',
+                        code: '#a18cd1'
+                      },
+                      {
+                        minvalue: '1',
+                        maxvalue: '50',
+                        code: '#fbc2eb'
+                      }
+                    ]
+                  },
+                  data: ordersTrendRegion
+                }
+              }}
+            />
           </Container>
         </Container>
       </Container>
     );
   }
 }
-
