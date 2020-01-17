@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Container } from './styled-components';
+import { Container } from '../helpers/styled-components';
 import ReactFC from 'react-fusioncharts';
 
-class Map extends Component {
+export default class Map extends Component {
   render() {
     const { ordersTrendRegion } = this.props;
     return (
@@ -11,7 +11,7 @@ class Map extends Component {
           <Container className='chart-container large full-height'>
             <ReactFC
               {...{
-                type: 'usaregion',
+                type: 'romania',
                 width: '100%',
                 height: '100%',
                 dataFormat: 'json',
@@ -20,8 +20,8 @@ class Map extends Component {
                 dataSource: {
                   chart: {
                     theme: 'ecommerce',
-                    caption: 'Orders Trend',
-                    subCaption: 'By Region'
+                    caption: 'Tendințe vânzări',
+                    subCaption: 'pe județ'
                   },
                   colorrange: {
                     code: '#F64F4B',
@@ -31,12 +31,12 @@ class Map extends Component {
                       {
                         minValue: '10',
                         maxvalue: '25',
-                        code: '#EDF8B1'
+                        code: '#a18cd1'
                       },
                       {
-                        minvalue: '25',
+                        minvalue: '1',
                         maxvalue: '50',
-                        code: '#18D380'
+                        code: '#fbc2eb'
                       }
                     ]
                   },
@@ -50,5 +50,3 @@ class Map extends Component {
     );
   }
 }
-
-export default Map;
