@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Nav } from '../helpers/styled-components';
+import { Switch, Route } from 'react-router-dom';
 
 // fusioncharts
 import FusionCharts from 'fusioncharts';
@@ -13,13 +13,8 @@ import '../helpers/charts-theme';
 import config from '../config';
 import formatNum from '../helpers/format-number';
 
-// components
 import Navbar from './Navbar';
-import Control from './Control';
-import Map from './Map';
-import BarChart from './BarChart';
-import Doghnut from './Doghnut';
-import Card from './Card';
+import Summary from './Summary';
 
 ReactFC.fcRoot(FusionCharts, Charts, Maps, RomaniaMap);
 
@@ -155,8 +150,12 @@ class App extends Component {
 
     // actually set the data for map
     Object.entries(dataForMap).forEach((region, idx) => {
+      // ordersTrendRegion should not receive an object with id: 24
+      let id =
+        idx >= 23 ? `${idx + 2}` : idx < 9 ? `0${idx + 1}` : `${idx + 1}`;
+
       ordersTrendRegion.push({
-        id: idx >= 9 ? `${idx + 1}` : `0${idx + 1}`,
+        id,
         value: region[1]
       });
     });
@@ -219,95 +218,59 @@ class App extends Component {
 
   render() {
     return (
-      <Container>
-        {/* static navbar - top */}
-        <Navbar username='Gabriel' />
+      <>
+        <Navbar username='Administrator' />
+        <Switch>
+          <Route
+            exact={true}
+            path={'/summary'}
+            render={() => (
+              <Summary
+                dropdownOptions={this.state.dropdownOptions}
+                selectedValue={this.state.selectedValue}
+                okaziiRevenue={this.state.okaziiRevenue}
+                OLXRevenue={this.state.OLXRevenue}
+                publi24Revenue={this.state.publi24Revenue}
+                laJumateRevenue={this.state.laJumateRevenue}
+                totalRevenue={this.state.totalRevenue}
+                productViews={this.state.productViews}
+                purchaseRate={this.state.purchaseRate}
+                checkoutRate={this.state.checkoutRate}
+                abandonedRate={this.state.abandonedRate}
+                ordersTrendStore={this.state.ordersTrendStore}
+                ordersTrendRegion={this.state.ordersTrendRegion}
+                updateDashboard={this.updateDashboard}
+              />
+            )}
+          />
 
-        {/* static navbar - bottom */}
-        <Control
-          dropdownOptions={this.state.dropdownOptions}
-          updateDashboard={this.updateDashboard}
-          selectedValue={this.state.selectedValue}
-        />
-
-        <Container className='container-fluid pr-5 pl-5 pt-5 pb-5'>
-          {/* row 1 - revenue */}
-          <Container className='row'>
-            <Card
-              label='Venit Okazii'
-              value={this.state.okaziiRevenue}
-              className='fa-amazon'
-              hasLogo={true}
-            />
-            <Card
-              label='Venit OLX'
-              value={this.state.OLXRevenue}
-              className='fa-ebay'
-              hasLogo={true}
-            />
-            <Card
-              label='Venit Publi24'
-              value={this.state.publi24Revenue}
-              className='fa-etsy'
-              hasLogo={true}
-            />
-            <Card
-              label='Venit LaJumate'
-              value={this.state.laJumateRevenue}
-              className='fa-etsy'
-              hasLogo={true}
-            />
-            <Card
-              label='Venit Total'
-              value={this.state.totalRevenue}
-              hasLogo={false}
-            />
-          </Container>
-
-          {/* row 2 - conversion */}
-          <Container className='row'>
-            <Card
-              label='Vizualizări prodse'
-              value={this.state.productViews}
-              hasLogo={false}
-              isViews={true}
-            />
-            <Container className='col-md-8 col-lg-9 is-light-text mb-4'>
-              <Container className='card is-card-dark chart-card'>
-                <Container className='row full-height'>
-                  <Doghnut
-                    caption={'Rata de achiziție'}
-                    value={this.state.purchaseRate}
-                    paletteColors={'3B70C4, #000000'}
-                  />
-                  <Doghnut
-                    caption={'Rata produse în coș'}
-                    value={this.state.checkoutRate}
-                    paletteColors={'#41B6C4, #000000'}
-                    className='border-left border-right'
-                  />
-                  <Doghnut
-                    caption={'Abandon Coș'}
-                    value={this.state.abandonedRate}
-                    paletteColors={'#EDF8B1, #000000'}
-                  />
-                </Container>
-              </Container>
-            </Container>
-          </Container>
-
-          {/* row 3 - orders trend */}
-          <Container className='row' style={{ minHeight: '400px' }}>
-            <Container className='col-md-6 mb-4'>
-              <Container className='card is-card-dark chart-card'>
-                <BarChart ordersTrendStore={this.state.ordersTrendStore} />
-              </Container>
-            </Container>
-            <Map ordersTrendRegion={this.state.ordersTrendRegion} />
-          </Container>
-        </Container>
-        {/* content area end */}
-      </Container>
+          <Route
+            exact={true}
+            path={'/olx'}
+            render={() => <div style={{color: 'white'}}>Olx placeholder</div>}
+          />
+          <Route
+            exact={true}
+            path={'/publi24'}
+            render={() => <div style={{color: 'white'}}>Publi placeholder</div>}
+          />
+          <Route
+            exact={true}
+            path={'/okazii'}
+            render={() => <div style={{color: 'white'}}>Okazii placeholder</div>}
+          />
+          <Route
+            exact={true}
+            path={'/lajumate'}
+            render={() => <div style={{color: 'white'}}>Lajumate placeholder</div>}
+          />
+          <Route
+            exact={true}
+            path={'/judet/:id'}
+            render={() => <div style={{color: 'white'}}>judet placeholder</div>}
+          />
+        </Switch>
+      </>
     );
   }
 }
