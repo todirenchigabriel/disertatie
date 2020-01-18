@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Nav } from '../helpers/styled-components';
 import Dropdown from 'react-dropdown';
 
-export default class Control extends Component {
+export default class Filter extends Component {
   render() {
     const { dropdownOptions, updateDashboard, selectedValue } = this.props;
     return (

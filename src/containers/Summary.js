@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Container, Nav } from '../helpers/styled-components';
 
 // components
-import Control from './Control';
-import Map from './Map';
-import BarChart from './BarChart';
-import Doghnut from './Doghnut';
-import Card from './Card';
+import Filter from '../components/Filter';
+import Map from '../components/Map';
+import BarChart from '../components/BarChart';
+import Doghnut from '../components/Doghnut';
+import Card from '../components/Card';
 
 export default class Summary extends Component {
   render() {
@@ -29,7 +29,7 @@ export default class Summary extends Component {
     } = this.props;
     return (
       <Container>
-        <Control
+        <Filter
           dropdownOptions={dropdownOptions}
           updateDashboard={updateDashboard}
           selectedValue={selectedValue}
