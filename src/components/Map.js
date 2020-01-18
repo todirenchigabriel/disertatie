@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Container } from '../helpers/styled-components';
 import ReactFC from 'react-fusioncharts';
 
-export default class Map extends Component {
+class Map extends Component {
   render() {
-    const { ordersTrendRegion } = this.props;
+    const { ordersTrendRegion, changeRegion } = this.props;
     return (
-      <Container className='col-md-6 mb-4'>
+      <Container className='col-md-12 mb-4'>
         <Container className='card is-card-dark chart-card'>
           <Container className='chart-container large full-height'>
             <ReactFC
@@ -41,6 +41,11 @@ export default class Map extends Component {
                     ]
                   },
                   data: ordersTrendRegion
+                },
+                events: {
+                  entityClick: (evt, data) => {
+                    changeRegion(data.shortLabel)
+                  }
                 }
               }}
             />
@@ -50,3 +55,5 @@ export default class Map extends Component {
     );
   }
 }
+
+export default Map;

@@ -236,3 +236,9 @@ body {
     height: 350px !important;
   }
 }
+
+.navbar-ecomm-links {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+}
