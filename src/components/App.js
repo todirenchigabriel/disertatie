@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
 // fusioncharts
 import FusionCharts from 'fusioncharts';
@@ -15,6 +15,7 @@ import formatNum from '../helpers/format-number';
 
 import Navbar from './Navbar';
 import Summary from './Summary';
+import Region from './Region'
 
 ReactFC.fcRoot(FusionCharts, Charts, Maps, RomaniaMap);
 
@@ -36,7 +37,7 @@ class App extends Component {
       purchaseRate: ' ',
       checkoutRate: ' ',
       abandonedRate: ' ',
-      ordersTrendStore: []
+      ordersTrendStore: [],
     };
   }
 
@@ -184,6 +185,10 @@ class App extends Component {
     this.setState({ selectedValue: event.value });
   };
 
+  changeRegion = (region) => {
+    this.props.history.push(`/judet/${region}`);
+  }
+
   // this is fine
   componentDidMount() {
     fetch(url)
@@ -223,7 +228,7 @@ class App extends Component {
         <Switch>
           <Route
             exact={true}
-            path={'/summary'}
+            path={'/'}
             render={() => (
               <Summary
                 dropdownOptions={this.state.dropdownOptions}
@@ -240,34 +245,40 @@ class App extends Component {
                 ordersTrendStore={this.state.ordersTrendStore}
                 ordersTrendRegion={this.state.ordersTrendRegion}
                 updateDashboard={this.updateDashboard}
+                changeRegion={this.changeRegion}
               />
             )}
           />
-
           <Route
             exact={true}
             path={'/olx'}
-            render={() => <div style={{color: 'white'}}>Olx placeholder</div>}
+            render={() => <div style={{ color: 'white' }}>Olx placeholder</div>}
           />
           <Route
             exact={true}
             path={'/publi24'}
-            render={() => <div style={{color: 'white'}}>Publi placeholder</div>}
+            render={() => (
+              <div style={{ color: 'white' }}>Publi placeholder</div>
+            )}
           />
           <Route
             exact={true}
             path={'/okazii'}
-            render={() => <div style={{color: 'white'}}>Okazii placeholder</div>}
+            render={() => (
+              <div style={{ color: 'white' }}>Okazii placeholder</div>
+            )}
           />
           <Route
             exact={true}
             path={'/lajumate'}
-            render={() => <div style={{color: 'white'}}>Lajumate placeholder</div>}
+            render={() => (
+              <div style={{ color: 'white' }}>Lajumate placeholder</div>
+            )}
           />
           <Route
             exact={true}
             path={'/judet/:id'}
-            render={() => <div style={{color: 'white'}}>judet placeholder</div>}
+            render={() => <Region /> }
           />
         </Switch>
       </>
@@ -275,4 +286,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

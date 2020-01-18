@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { Container } from '../helpers/styled-components';
 import ReactFC from 'react-fusioncharts';
-import {
-  useHistory,
-  // useLocation
-} from "react-router-dom";
 
-export default class Map extends Component {
+class Map extends Component {
   render() {
-    const { ordersTrendRegion } = this.props;
+    const { ordersTrendRegion, changeRegion } = this.props;
     return (
       <Container className='col-md-12 mb-4'>
         <Container className='card is-card-dark chart-card'>
@@ -47,12 +43,8 @@ export default class Map extends Component {
                   data: ordersTrendRegion
                 },
                 events: {
-                  // this function should update the url to /judet/data.shortlabel
                   entityClick: (evt, data) => {
-                    let history = useHistory();
-                    history.push('/olx')
-                    console.log(data.shortLabel)
-
+                    changeRegion(data.shortLabel)
                   }
                 }
               }}
@@ -63,3 +55,5 @@ export default class Map extends Component {
     );
   }
 }
+
+export default Map;

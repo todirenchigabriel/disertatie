@@ -24,7 +24,8 @@ export default class Summary extends Component {
       abandonedRate,
       ordersTrendStore,
       ordersTrendRegion,
-      updateDashboard
+      updateDashboard,
+      changeRegion
     } = this.props;
     return (
       <Container>
@@ -41,12 +42,7 @@ export default class Summary extends Component {
               hasLogo={true}
               isOkazii
             />
-            <Card
-              label='Venit OLX'
-              value={OLXRevenue}
-              hasLogo={true}
-              isOlx
-            />
+            <Card label='Venit OLX' value={OLXRevenue} hasLogo={true} isOlx />
             <Card
               label='Venit Publi24'
               value={publi24Revenue}
@@ -59,11 +55,7 @@ export default class Summary extends Component {
               hasLogo={true}
               isLajum
             />
-            <Card
-              label='Venit Total'
-              value={totalRevenue}
-              hasLogo={false}
-            />
+            <Card label='Venit Total' value={totalRevenue} hasLogo={false} />
             <Card
               label='Vizualizări prodse'
               value={productViews}
@@ -103,7 +95,10 @@ export default class Summary extends Component {
             <BarChart ordersTrendStore={ordersTrendStore} />
           </Container>
           <Container className='row' style={{ height: '800px' }}>
-            <Map ordersTrendRegion={ordersTrendRegion} />
+            <Map
+              ordersTrendRegion={ordersTrendRegion}
+              changeRegion={changeRegion}
+            />
           </Container>
         </Container>
       </Container>

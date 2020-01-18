@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Nav } from '../helpers/styled-components';
-import UserImg from '../assets/images/user-img-placeholder.jpeg';
 
 export default class Navbar extends Component {
   render() {
@@ -9,7 +8,7 @@ export default class Navbar extends Component {
     return (
       <Nav className='navbar navbar-expand-lg fixed-top is-white is-dark-text'>
         <Container className='navbar-brand h1 mb-0 text-large font-medium'>
-          <Link to='/summary'>Sumar vânzări</Link>
+          <Link to='/'>Sumar vânzări</Link>
         </Container>
         <Container className='navbar-brand h1 mb-0 text-large font-medium'>
           <div className="navbar-ecomm-links">
