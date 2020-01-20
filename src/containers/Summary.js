@@ -33,6 +33,8 @@ export default class Summary extends Component {
           dropdownOptions={dropdownOptions}
           updateDashboard={updateDashboard}
           selectedValue={selectedValue}
+          hasLogic
+          title='Sumar comenzi'
         />
         <Container className='container-fluid pr-5 pl-5 pt-5 pb-5'>
           <Container className='row'>

@@ -8,37 +8,30 @@ import ReactFC from 'react-fusioncharts';
 charts(FusionCharts);
 ReactFC.fcRoot(FusionCharts, charts);
 
-export default class LineGraph extends Component {
+export default class BarChart3D extends Component {
   render() {
     const { data } = this.props;
     data.reverse();
     return (
       <Container
-        className='col-md-8 col-lg-12 is-light-text mb-4'
+        className='col-md-8 col-lg-6 is-light-text mb-4'
         style={{ height: '500px' }}>
         <Container className='card is-card-dark chart-card'>
           <Container className='chart-container large full-height'>
             <ReactFC
               {...{
-                type: 'spline',
+                type: 'column3d',
                 width: '100%',
                 height: '100%',
                 dataFormat: 'JSON',
                 containerBackgroundOpacity: '0',
                 dataSource: {
                   chart: {
-                    caption: 'Numarul comenzilor din ultimele 12 luni',
-                    anchorradius: '5',
-                    plottooltext:
-                      'Totalul comenzilor din $label este de <b>$dataValue</b>',
-                    showhovereffect: '1',
-                    showvalues: '0',
-                    numbersuffix: '',
-                    theme: 'ecommerce',
-                    anchorbgcolor: '#72D7B2',
-                    palettecolors: '#72D7B2',
-                    containerBackgroundOpacity: '0'
-                    // baseFontSize: "10"
+                    caption: 'Comenzi totale',
+                    // subcaption: 'For the year 2017',
+                    // yaxisname: 'Deforested Area{br}(in Hectares)',
+                    decimals: '1',
+                    theme: 'ecommerce'
                   },
                   data
                 }
