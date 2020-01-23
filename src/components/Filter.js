@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Nav } from '../helpers/styled-components';
 import Dropdown from 'react-dropdown';
+import TimeSelector from './TimeSelector';
 
 export default class Filter extends Component {
   render() {
@@ -14,7 +15,9 @@ export default class Filter extends Component {
 
     return (
       <Nav className='navbar fixed-top nav-secondary is-dark is-light-text'>
-        <Container className='text-medium'>{title}</Container>
+        <Container className='text-medium'>{title}
+          <TimeSelector />
+        </Container>
         <Container className='navbar-nav ml-auto'>
           {hasLogic && (
             <Dropdown

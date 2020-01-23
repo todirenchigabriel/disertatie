@@ -1,0 +1,39 @@
+.buttonwrapper {
+  list-style: none;
+  padding: 5px;
+  display: inline-flex;
+  width: auto;
+  border-radius: 50px;
+  background-color: hsla(0, 0%, 100%, 0.13);
+}
+
+.buttonwrapper li {
+    display: block;
+    float: left;
+    margin-left: 35px;
+    height: 35px;
+    width: 80px;
+}
+
+.buttonwrapper label {
+  display: block;
+  color: #fff;
+  font-family: Nunito Sans Light;
+  opacity: 1;
+  /* font-size: 12px; */
+  line-height: 1.5;
+  text-align: center;
+  padding: 8px 10px;
+  margin-bottom: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.buttonwrapper li:first-child {
+    margin-left: 0;
+}
+
+.buttonwrapper li.active label {
+    background-color: #182142;
+    border-radius: 50px;
+}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Container } from '../helpers/styled-components';
 import publi24Logo from '../assets/images/publi24-logo.PNG'
 import olxLogo from '../assets/images/olx-logo.png'
-const classNames = require('classnames');
 
 
 export default class Card extends Component {

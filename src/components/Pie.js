@@ -11,7 +11,7 @@ ReactFC.fcRoot(FusionCharts, charts);
 export default class Pie extends Component {
   render() {
     const { data } = this.props;
-    
+
     return (
       <Container
         className='col-md-8 col-lg-6 is-light-text mb-4'
