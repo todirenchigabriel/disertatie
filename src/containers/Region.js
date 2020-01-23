@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Container } from '../helpers/styled-components';
 import LineGraph from '../components/LineGraph';
 import BarChart3D from '../components/BarChart3D';
-import RatingMeter from '../components/RatingMeter';
+import Pie from '../components/Pie';
+import Filter from '../components/Filter';
+import { Container } from '../helpers/styled-components';
 import regions from '../helpers/region-shortcuts';
 
-import Filter from '../components/Filter';
 
 export default class Region extends Component {
   render() {
@@ -15,12 +15,34 @@ export default class Region extends Component {
       laJumateOrders,
       okaziiOrders,
       last12monthsData,
-      selectedRegion
+      selectedRegion,
+      totalNumberOfOrders
     } = this.props;
 
+    // data holding variables
     let last12MonthsFinal = [];
     let ordersByWebsite = [];
+    let regionOrdersPercentage = [];
 
+    // regionOrdersPercentage calculation
+    const totalOrdersPerRegion =
+      publi24Orders + olxOrders + laJumateOrders + okaziiOrders;
+    let regionSalesPercentage = (
+      (totalOrdersPerRegion / totalNumberOfOrders) *
+      100
+    ).toFixed(2);
+    let otherSalesPercentage = 100 - parseFloat(regionSalesPercentage);
+    regionOrdersPercentage.push({
+      label: regions[selectedRegion],
+      value: regionSalesPercentage
+    });
+    regionOrdersPercentage.push({
+      label: 'Altele',
+      value: otherSalesPercentage
+    });
+
+
+    // last12MonthsFinal & ordersByWebsite calculation
     if (last12monthsData && ordersByWebsite) {
       Object.entries(last12monthsData).forEach((month) => {
         let b = new Date(parseInt(month[0]));
@@ -52,15 +74,15 @@ export default class Region extends Component {
     return (
       <Container>
         <Filter
-          dropdownOptions={''}
-          updateDashboard={''}
-          selectedValue={''}
+          dropdownOptions=''
+          updateDashboard=''
+          selectedValue=''
           title={`Situație vânzări pentru județul ${regions[selectedRegion]}`}
         />
         <Container className='container-fluid pr-5 pl-5 pt-5 pb-5'>
           <div style={{ color: 'white' }}>
             <div style={{ display: 'flex' }}>
-              <RatingMeter />
+              <Pie data={regionOrdersPercentage} />
               <BarChart3D data={ordersByWebsite} />
             </div>
             <LineGraph data={last12MonthsFinal} />

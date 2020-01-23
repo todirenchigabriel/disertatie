@@ -12,10 +12,10 @@ export default class Navbar extends Component {
         </Container>
         <Container className='navbar-brand h1 mb-0 text-large font-medium'>
           <div className="navbar-ecomm-links">
-            <Link to='/olx'>OLX</Link>
-            <Link to='/lajumate'>LaJumate</Link>
-            <Link to='/publi24'>Publi24</Link>
-            <Link to='/okazii'>Okazii</Link>
+            <Link to='/website'>OLX</Link>
+            <Link to='/website'>LaJumate</Link>
+            <Link to='/website'>Publi24</Link>
+            <Link to='/website'>Okazii</Link>
           </div>
         </Container>
         <Container className='navbar-nav ml-auto'>

@@ -8,8 +8,10 @@ import ReactFC from 'react-fusioncharts';
 charts(FusionCharts);
 ReactFC.fcRoot(FusionCharts, charts);
 
-export default class RatingMeter extends Component {
+export default class Pie extends Component {
   render() {
+    const { data } = this.props;
+    
     return (
       <Container
         className='col-md-8 col-lg-6 is-light-text mb-4'
@@ -25,7 +27,8 @@ export default class RatingMeter extends Component {
                 containerBackgroundOpacity: '0',
                 dataSource: {
                   chart: {
-                    caption: 'Market Share of Web Servers',
+                    caption:
+                      'Proporția vânzărilor pe județul Botoșani din totalul vânzărilor',
                     plottooltext:
                       '<b>$percentValue</b> din totalul comenzilor provin din județul $label',
                     showlegend: '1',
@@ -34,17 +37,7 @@ export default class RatingMeter extends Component {
                     usedataplotcolorforlabels: '1',
                     theme: 'ecommerce'
                   },
-                  data: [
-                    {
-                      label: 'BT',
-                      value: '2'
-                    },
-                    {
-                      label: 'Others',
-                      value: '98'
-                    },
-                   
-                  ]
+                  data
                 }
               }}
             />

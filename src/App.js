@@ -16,6 +16,7 @@ import formatNum from './helpers/format-number';
 import Navbar from './components/Navbar';
 import Summary from './containers/Summary';
 import Region from './containers/Region';
+import Website from './containers/Website';
 
 ReactFC.fcRoot(FusionCharts, Charts, Maps, RomaniaMap);
 
@@ -193,6 +194,7 @@ class App extends Component {
     let olxOrders = 0;
     let laJumateOrders = 0;
     let okaziiOrders = 0;
+    let totalNumberOfOrders = 0;
     let last12monthsData = {};
 
     // transform all the strings in dropdownOption into dates
@@ -210,6 +212,7 @@ class App extends Component {
 
     // iterate the state array that holds all the data
     arr.forEach((arr) => {
+      totalNumberOfOrders += parseInt(arr.orders);
       // get data for region sales by store
       if (arr.source === 'Publi24')
         publi24Orders += parseInt(arr[selectedRegion]);
@@ -239,6 +242,7 @@ class App extends Component {
       laJumateOrders,
       okaziiOrders,
       last12monthsData,
+      totalNumberOfOrders,
       selectedRegion: region
     });
     this.props.history.push(`/judet/${region}`);
@@ -304,32 +308,7 @@ class App extends Component {
               />
             )}
           />
-          <Route
-            exact={true}
-            path={'/olx'}
-            render={() => <div style={{ color: 'white' }}>Olx placeholder</div>}
-          />
-          <Route
-            exact={true}
-            path={'/publi24'}
-            render={() => (
-              <div style={{ color: 'white' }}>Publi placeholder</div>
-            )}
-          />
-          <Route
-            exact={true}
-            path={'/okazii'}
-            render={() => (
-              <div style={{ color: 'white' }}>Okazii placeholder</div>
-            )}
-          />
-          <Route
-            exact={true}
-            path={'/lajumate'}
-            render={() => (
-              <div style={{ color: 'white' }}>Lajumate placeholder</div>
-            )}
-          />
+          <Route exact={true} path={'/website'} render={() => <Website />} />
           <Route
             exact={true}
             path={'/judet/:id'}
@@ -341,6 +320,7 @@ class App extends Component {
                 okaziiOrders={this.state.okaziiOrders}
                 last12monthsData={this.state.last12monthsData}
                 selectedRegion={this.state.selectedRegion}
+                totalNumberOfOrders={this.state.totalNumberOfOrders}
               />
             )}
           />
