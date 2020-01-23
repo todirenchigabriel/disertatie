@@ -7,15 +7,16 @@ import Charts from 'fusioncharts/fusioncharts.charts';
 import Maps from 'fusioncharts/fusioncharts.maps';
 import RomaniaMap from 'fusionmaps/maps/es/fusioncharts.romania.js';
 import ReactFC from 'react-fusioncharts';
-import '../helpers/charts-theme';
+import './helpers/charts-theme';
 
 // helpers
-import config from '../config';
-import formatNum from '../helpers/format-number';
+import config from './config';
+import formatNum from './helpers/format-number';
 
-import Navbar from './Navbar';
-import Summary from './Summary';
-import Region from './Region'
+import Navbar from './components/Navbar';
+import Summary from './containers/Summary';
+import Region from './containers/Region';
+import Website from './containers/Website';
 
 ReactFC.fcRoot(FusionCharts, Charts, Maps, RomaniaMap);
 
@@ -37,7 +38,7 @@ class App extends Component {
       purchaseRate: ' ',
       checkoutRate: ' ',
       abandonedRate: ' ',
-      ordersTrendStore: [],
+      ordersTrendStore: []
     };
   }
 
@@ -186,10 +187,67 @@ class App extends Component {
   };
 
   changeRegion = (region) => {
-    this.props.history.push(`/judet/${region}`);
-  }
+    const selectedRegion = `orders_${region}`;
+    const arr = this.state.items;
 
-  // this is fine
+    let publi24Orders = 0;
+    let olxOrders = 0;
+    let laJumateOrders = 0;
+    let okaziiOrders = 0;
+    let totalNumberOfOrders = 0;
+    let last12monthsData = {};
+
+    // transform all the strings in dropdownOption into dates
+    // sort them from the most recent to the oldest
+    // take the first 12 that are most recent
+    let last12months = this.state.dropdownOptions
+      .map((date) => new Date(date).getTime())
+      .sort((a, b) => b - a)
+      .slice(0, 12);
+
+    // put the month's keys into the object that will hold data
+    last12months.forEach((month) => {
+      last12monthsData[month] = 0;
+    });
+
+    // iterate the state array that holds all the data
+    arr.forEach((arr) => {
+      totalNumberOfOrders += parseInt(arr.orders);
+      // get data for region sales by store
+      if (arr.source === 'Publi24')
+        publi24Orders += parseInt(arr[selectedRegion]);
+      if (arr.source === 'OLX') olxOrders += parseInt(arr[selectedRegion]);
+      if (arr.source === 'Okazii')
+        okaziiOrders += parseInt(arr[selectedRegion]);
+      if (arr.source === 'LaJumate')
+        laJumateOrders += parseInt(arr[selectedRegion]);
+
+      // looks for the current month in the current iteration
+      // check if the that month is in the last 12 months
+      // add the corresponding data for the region to the final data object
+      let currentMonthInIteration = new Date(arr.month);
+      last12months.forEach((month) => {
+        if (month === currentMonthInIteration.getTime()) {
+          last12monthsData[currentMonthInIteration.getTime()] += parseInt(
+            arr[selectedRegion]
+          );
+        }
+      });
+    });
+
+    this.setState({
+      ...this.state,
+      publi24Orders,
+      olxOrders,
+      laJumateOrders,
+      okaziiOrders,
+      last12monthsData,
+      totalNumberOfOrders,
+      selectedRegion: region
+    });
+    this.props.history.push(`/judet/${region}`);
+  };
+
   componentDidMount() {
     fetch(url)
       .then((response) => response.json())
@@ -212,6 +270,7 @@ class App extends Component {
 
         this.setState(
           {
+            ...this.state,
             items: rows,
             dropdownOptions: dropdownOptions,
             selectedValue: dropdownOptions[0]
@@ -249,36 +308,21 @@ class App extends Component {
               />
             )}
           />
-          <Route
-            exact={true}
-            path={'/olx'}
-            render={() => <div style={{ color: 'white' }}>Olx placeholder</div>}
-          />
-          <Route
-            exact={true}
-            path={'/publi24'}
-            render={() => (
-              <div style={{ color: 'white' }}>Publi placeholder</div>
-            )}
-          />
-          <Route
-            exact={true}
-            path={'/okazii'}
-            render={() => (
-              <div style={{ color: 'white' }}>Okazii placeholder</div>
-            )}
-          />
-          <Route
-            exact={true}
-            path={'/lajumate'}
-            render={() => (
-              <div style={{ color: 'white' }}>Lajumate placeholder</div>
-            )}
-          />
+          <Route exact={true} path={'/website'} render={() => <Website />} />
           <Route
             exact={true}
             path={'/judet/:id'}
-            render={() => <Region /> }
+            render={() => (
+              <Region
+                publi24Orders={this.state.publi24Orders}
+                olxOrders={this.state.olxOrders}
+                laJumateOrders={this.state.laJumateOrders}
+                okaziiOrders={this.state.okaziiOrders}
+                last12monthsData={this.state.last12monthsData}
+                selectedRegion={this.state.selectedRegion}
+                totalNumberOfOrders={this.state.totalNumberOfOrders}
+              />
+            )}
           />
         </Switch>
       </>

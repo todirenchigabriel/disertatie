@@ -44,7 +44,7 @@ class Map extends Component {
                 },
                 events: {
                   entityClick: (evt, data) => {
-                    changeRegion(data.shortLabel)
+                    changeRegion(data.shortLabel);
                   }
                 }
               }}
