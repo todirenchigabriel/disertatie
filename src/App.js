@@ -46,9 +46,29 @@ class App extends Component {
     const arr = this.state.items;
     const arrLen = arr.length;
     let okaziiRevenue = 0;
+    let okaziiViews = 0;
+    let okaziiAbandonedRate = 0;
+    let okaziiBasketRate = 0;
+    let okaziiPurchaseRate = 0;
+
     let laJumateRevenue = 0;
+    let laJumateViews = 0;
+    let laJumateAbandonedRate = 0;
+    let laJumateBasketRate = 0;
+    let laJumatePurchaseRate = 0;
+
     let OLXRevenue = 0;
+    let OLXViews = 0;
+    let OLXAbandonedRate = 0;
+    let OLXBasketRate = 0;
+    let OLXPurchaseRate = 0;
+
     let publi24Revenue = 0;
+    let publi24Views = 0;
+    let publi24AbandonedRate = 0;
+    let publi24BasketRate = 0;
+    let publi24PurchaseRate = 0;
+
     let totalRevenue = 0;
     let productViews = 0;
     let purchaseRate = 0;
@@ -103,7 +123,42 @@ class App extends Component {
       orders_IF: 0
     };
 
+    let okaziiEntries = 0;
+    let laJumateEntries = 0;
+    let olxEntries = 0;
+    let publi24Entries = 0;
+
     for (let i = 0; i < arrLen; i++) {
+      // get data for each website
+      if (arr[i]['source'] === 'Okazii') {
+        okaziiEntries++;
+        okaziiViews += parseInt(arr[i].product_views);
+        okaziiAbandonedRate += parseFloat(arr[i].abandoned_rate);
+        okaziiBasketRate += parseFloat(arr[i].checkout_rate);
+        okaziiPurchaseRate += parseFloat(arr[i].purchase_rate);
+      }
+      if (arr[i]['source'] === 'OLX') {
+        olxEntries++;
+        OLXViews += parseInt(arr[i].product_views);
+        OLXAbandonedRate += parseFloat(arr[i].abandoned_rate);
+        OLXBasketRate += parseFloat(arr[i].checkout_rate);
+        OLXPurchaseRate += parseFloat(arr[i].purchase_rate);
+      }
+      if (arr[i]['source'] === 'Publi24') {
+        publi24Entries++;
+        publi24Views += parseInt(arr[i].product_views);
+        publi24AbandonedRate += parseFloat(arr[i].abandoned_rate);
+        publi24BasketRate += parseFloat(arr[i].checkout_rate);
+        publi24PurchaseRate += parseFloat(arr[i].purchase_rate);
+      }
+      if (arr[i]['source'] === 'LaJumate') {
+        laJumateEntries++;
+        laJumateViews += parseInt(arr[i].product_views);
+        laJumateAbandonedRate += parseFloat(arr[i].abandoned_rate);
+        laJumateBasketRate += parseFloat(arr[i].checkout_rate);
+        laJumatePurchaseRate += parseFloat(arr[i].purchase_rate);
+      }
+
       if (arg === arr[i]['month']) {
         if (arr[i]['source'] === 'Okazii') {
           okaziiRevenue += parseInt(arr[i].revenue);
@@ -164,7 +219,7 @@ class App extends Component {
 
     selectedValue = arg;
 
-    // setting state
+    debugger;
     this.setState({
       okaziiRevenue: formatNum(okaziiRevenue),
       OLXRevenue: formatNum(OLXRevenue),
@@ -177,7 +232,25 @@ class App extends Component {
       abandonedRate,
       ordersTrendStore,
       ordersTrendRegion,
-      selectedValue
+      selectedValue,
+      okaziiViews: formatNum(okaziiViews),
+      OLXViews: formatNum(OLXViews),
+      publi24Views: formatNum(publi24Views),
+      laJumateViews: formatNum(laJumateViews),
+      okaziiAbandonedRate: parseInt(okaziiAbandonedRate / okaziiEntries),
+      OLXAbandonedRate: parseInt(OLXAbandonedRate / olxEntries),
+      publi24AbandonedRate: parseInt(publi24AbandonedRate / publi24Entries),
+      laJumateAbandonedRate: parseInt(laJumateAbandonedRate / laJumateEntries),
+
+      OLXBasketRate: parseInt(OLXBasketRate / olxEntries),
+      publi24BasketRate: parseInt(publi24BasketRate / publi24Entries),
+      okaziiBasketRate: parseInt(okaziiBasketRate / okaziiEntries),
+      laJumateBasketRate: parseInt(laJumateBasketRate / laJumateEntries),
+
+      OLXPurchaseRate: parseInt(OLXPurchaseRate / olxEntries),
+      publi24PurchaseRate: parseInt(publi24PurchaseRate / publi24Entries),
+      okaziiPurchaseRate: parseInt(okaziiPurchaseRate / okaziiEntries),
+      laJumatePurchaseRate: parseInt(laJumatePurchaseRate / laJumateEntries)
     });
   };
 
@@ -308,7 +381,19 @@ class App extends Component {
               />
             )}
           />
-          <Route exact={true} path={'/website'} render={() => <Website />} />
+          <Route
+            exact={true}
+            path={'/website'}
+            render={() => (
+              <Website
+                websiteRevenue={this.state.OLXRevenue}
+                websiteViews={this.state.OLXViews}
+                websiteAbandonedRate={this.state.OLXAbandonedRate}
+                websiteBasketRate={this.state.OLXBasketRate}
+                websitePurchaseRate={this.state.OLXPurchaseRate}
+              />
+            )}
+          />
           <Route
             exact={true}
             path={'/judet/:id'}

@@ -15,8 +15,9 @@ export default class Filter extends Component {
 
     return (
       <Nav className='navbar fixed-top nav-secondary is-dark is-light-text'>
-        <Container className='text-medium'>{title}
-          <TimeSelector />
+        <Container className='text-medium'>
+          {title}
+          {hasLogic && <TimeSelector />}
         </Container>
         <Container className='navbar-nav ml-auto'>
           {hasLogic && (
