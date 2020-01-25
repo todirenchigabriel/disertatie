@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom';
 import { Container, Nav } from '../helpers/styled-components';
 
 export default class Navbar extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  changePage = (website) => {
+    this.props.accessWebsite(website);
+  };
+
   render() {
     const { username } = this.props;
     return (
@@ -11,11 +19,19 @@ export default class Navbar extends Component {
           <Link to='/'>Sumar vânzări</Link>
         </Container>
         <Container className='navbar-brand h1 mb-0 text-large font-medium'>
-          <div className="navbar-ecomm-links">
-            <Link to='/website'>OLX</Link>
-            <Link to='/website'>LaJumate</Link>
-            <Link to='/website'>Publi24</Link>
-            <Link to='/website'>Okazii</Link>
+          <div className='navbar-ecomm-links'>
+            <Link onClick={() => this.changePage('OLX')} to='/website'>
+              OLX
+            </Link>
+            <Link onClick={() => this.changePage('LaJumate')} to='/website'>
+              LaJumate
+            </Link>
+            <Link onClick={() => this.changePage('Publi24')} to='/website'>
+              Publi24
+            </Link>
+            <Link onClick={() => this.changePage('Okazii')} to='/website'>
+              Okazii
+            </Link>
           </div>
         </Container>
         <Container className='navbar-nav ml-auto'>

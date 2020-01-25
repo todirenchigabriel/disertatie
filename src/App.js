@@ -33,42 +33,73 @@ class App extends Component {
       OLXRevenue: null,
       laJumateRevenue: null,
       publi24Revenue: null,
-      totalRevenue: null,
+      totalRevenueSelectedMonth: null,
       productViews: null,
       purchaseRate: ' ',
       checkoutRate: ' ',
       abandonedRate: ' ',
-      ordersTrendStore: []
+      ordersTrendStore: [],
+      selectedWebsite: ''
     };
   }
+
+  accessWebsite = (website) => {
+    switch (website) {
+      case 'OLX':
+        this.setState({
+          ...this.state,
+          selectedWebsite: website
+        });
+      case 'LaJumate':
+        this.setState({
+          ...this.state,
+          selectedWebsite: website
+        });
+      case 'Publi24':
+        this.setState({
+          ...this.state,
+          selectedWebsite: website
+        });
+      case 'Okazii':
+        this.setState({
+          ...this.state,
+          selectedWebsite: website
+        });
+    }
+  };
 
   getData = (arg) => {
     const arr = this.state.items;
     const arrLen = arr.length;
     let okaziiRevenue = 0;
+    let okaziiTotalRevenue = 0;
     let okaziiViews = 0;
     let okaziiAbandonedRate = 0;
     let okaziiBasketRate = 0;
     let okaziiPurchaseRate = 0;
 
     let laJumateRevenue = 0;
+    let laJumateTotalRevenue = 0;
     let laJumateViews = 0;
     let laJumateAbandonedRate = 0;
     let laJumateBasketRate = 0;
     let laJumatePurchaseRate = 0;
 
     let OLXRevenue = 0;
+    let OLXTotalRevenue = 0;
     let OLXViews = 0;
     let OLXAbandonedRate = 0;
     let OLXBasketRate = 0;
     let OLXPurchaseRate = 0;
 
     let publi24Revenue = 0;
+    let publi24TotalRevenue = 0;
     let publi24Views = 0;
     let publi24AbandonedRate = 0;
     let publi24BasketRate = 0;
     let publi24PurchaseRate = 0;
 
+    let totalRevenueSelectedMonth = 0;
     let totalRevenue = 0;
     let productViews = 0;
     let purchaseRate = 0;
@@ -77,6 +108,11 @@ class App extends Component {
     let ordersTrendStore = [];
     let ordersTrendRegion = [];
     let selectedValue = null;
+
+    let okaziiEntries = 0;
+    let laJumateEntries = 0;
+    let olxEntries = 0;
+    let publi24Entries = 0;
 
     const dataForMap = {
       orders_AB: 0,
@@ -123,12 +159,60 @@ class App extends Component {
       orders_IF: 0
     };
 
-    let okaziiEntries = 0;
-    let laJumateEntries = 0;
-    let olxEntries = 0;
-    let publi24Entries = 0;
+    let last12monthsDataOLX = {};
+    let last12monthsDataOkazii = {};
+    let last12monthsDataPubli24 = {};
+    let last12monthsDataLaJumate = {};
+
+    // transform all the strings in dropdownOption into dates
+    // sort them from the most recent to the oldest
+    // take the first 12 that are most recent
+    let last12months = this.state.dropdownOptions
+      .map((date) => new Date(date).getTime())
+      .sort((a, b) => b - a)
+      .slice(0, 12);
+
+    // put the month's keys into the object that will hold data
+    last12months.forEach((month) => {
+      last12monthsDataOLX[month] = 0;
+      last12monthsDataOkazii[month] = 0;
+      last12monthsDataPubli24[month] = 0;
+      last12monthsDataLaJumate[month] = 0;
+    });
 
     for (let i = 0; i < arrLen; i++) {
+      // looks for the current month in the current iteration
+      // check if the month is in the last 12 months
+      // add the corresponding data for the region to the final data object
+      totalRevenue += parseInt(arr[i].revenue);
+
+      let currentMonthInIteration = new Date(arr[i].month);
+
+      last12months.forEach((month) => {
+        if (month === currentMonthInIteration.getTime()) {
+          if (arr[i]['source'] === 'Okazii') {
+            last12monthsDataOkazii[
+              currentMonthInIteration.getTime()
+            ] += parseInt(arr[i].orders);
+          }
+          if (arr[i]['source'] === 'OLX') {
+            last12monthsDataOLX[currentMonthInIteration.getTime()] += parseInt(
+              arr[i].orders
+            );
+          }
+          if (arr[i]['source'] === 'Publi24') {
+            last12monthsDataPubli24[
+              currentMonthInIteration.getTime()
+            ] += parseInt(arr[i].orders);
+          }
+          if (arr[i]['source'] === 'LaJumate') {
+            last12monthsDataLaJumate[
+              currentMonthInIteration.getTime()
+            ] += parseInt(arr[i].orders);
+          }
+        }
+      });
+
       // get data for each website
       if (arr[i]['source'] === 'Okazii') {
         okaziiEntries++;
@@ -136,6 +220,7 @@ class App extends Component {
         okaziiAbandonedRate += parseFloat(arr[i].abandoned_rate);
         okaziiBasketRate += parseFloat(arr[i].checkout_rate);
         okaziiPurchaseRate += parseFloat(arr[i].purchase_rate);
+        okaziiTotalRevenue += parseInt(arr[i].revenue);
       }
       if (arr[i]['source'] === 'OLX') {
         olxEntries++;
@@ -143,6 +228,7 @@ class App extends Component {
         OLXAbandonedRate += parseFloat(arr[i].abandoned_rate);
         OLXBasketRate += parseFloat(arr[i].checkout_rate);
         OLXPurchaseRate += parseFloat(arr[i].purchase_rate);
+        OLXTotalRevenue += parseInt(arr[i].revenue);
       }
       if (arr[i]['source'] === 'Publi24') {
         publi24Entries++;
@@ -150,6 +236,7 @@ class App extends Component {
         publi24AbandonedRate += parseFloat(arr[i].abandoned_rate);
         publi24BasketRate += parseFloat(arr[i].checkout_rate);
         publi24PurchaseRate += parseFloat(arr[i].purchase_rate);
+        publi24TotalRevenue += parseInt(arr[i].revenue);
       }
       if (arr[i]['source'] === 'LaJumate') {
         laJumateEntries++;
@@ -157,6 +244,7 @@ class App extends Component {
         laJumateAbandonedRate += parseFloat(arr[i].abandoned_rate);
         laJumateBasketRate += parseFloat(arr[i].checkout_rate);
         laJumatePurchaseRate += parseFloat(arr[i].purchase_rate);
+        laJumateTotalRevenue += parseInt(arr[i].revenue);
       }
 
       if (arg === arr[i]['month']) {
@@ -202,7 +290,7 @@ class App extends Component {
       }
     }
 
-    totalRevenue =
+    totalRevenueSelectedMonth =
       okaziiRevenue + OLXRevenue + publi24Revenue + laJumateRevenue;
 
     // actually set the data for map
@@ -219,13 +307,12 @@ class App extends Component {
 
     selectedValue = arg;
 
-    debugger;
     this.setState({
-      okaziiRevenue: formatNum(okaziiRevenue),
-      OLXRevenue: formatNum(OLXRevenue),
-      publi24Revenue: formatNum(publi24Revenue),
-      laJumateRevenue: formatNum(laJumateRevenue),
-      totalRevenue: formatNum(totalRevenue),
+      okaziiRevenue,
+      OLXRevenue,
+      publi24Revenue,
+      laJumateRevenue,
+      totalRevenueSelectedMonth,
       productViews: formatNum(productViews),
       purchaseRate,
       checkoutRate,
@@ -250,7 +337,18 @@ class App extends Component {
       OLXPurchaseRate: parseInt(OLXPurchaseRate / olxEntries),
       publi24PurchaseRate: parseInt(publi24PurchaseRate / publi24Entries),
       okaziiPurchaseRate: parseInt(okaziiPurchaseRate / okaziiEntries),
-      laJumatePurchaseRate: parseInt(laJumatePurchaseRate / laJumateEntries)
+      laJumatePurchaseRate: parseInt(laJumatePurchaseRate / laJumateEntries),
+
+      last12monthsDataOLX,
+      last12monthsDataOkazii,
+      last12monthsDataPubli24,
+      last12monthsDataLaJumate,
+
+      totalRevenue,
+      laJumateTotalRevenue,
+      publi24TotalRevenue,
+      okaziiTotalRevenue,
+      OLXTotalRevenue
     });
   };
 
@@ -296,7 +394,7 @@ class App extends Component {
         laJumateOrders += parseInt(arr[selectedRegion]);
 
       // looks for the current month in the current iteration
-      // check if the that month is in the last 12 months
+      // check if the month is in the last 12 months
       // add the corresponding data for the region to the final data object
       let currentMonthInIteration = new Date(arr.month);
       last12months.forEach((month) => {
@@ -356,7 +454,7 @@ class App extends Component {
   render() {
     return (
       <>
-        <Navbar username='Administrator' />
+        <Navbar username='Administrator' accessWebsite={this.accessWebsite} />
         <Switch>
           <Route
             exact={true}
@@ -369,7 +467,7 @@ class App extends Component {
                 OLXRevenue={this.state.OLXRevenue}
                 publi24Revenue={this.state.publi24Revenue}
                 laJumateRevenue={this.state.laJumateRevenue}
-                totalRevenue={this.state.totalRevenue}
+                totalRevenueSelectedMonth={this.state.totalRevenueSelectedMonth}
                 productViews={this.state.productViews}
                 purchaseRate={this.state.purchaseRate}
                 checkoutRate={this.state.checkoutRate}
@@ -384,15 +482,58 @@ class App extends Component {
           <Route
             exact={true}
             path={'/website'}
-            render={() => (
-              <Website
-                websiteRevenue={this.state.OLXRevenue}
-                websiteViews={this.state.OLXViews}
-                websiteAbandonedRate={this.state.OLXAbandonedRate}
-                websiteBasketRate={this.state.OLXBasketRate}
-                websitePurchaseRate={this.state.OLXPurchaseRate}
-              />
-            )}
+            render={() => {
+              switch (this.state.selectedWebsite) {
+                case 'OLX':
+                  return (
+                    <Website
+                      websiteRevenue={this.state.OLXTotalRevenue}
+                      websiteViews={this.state.OLXViews}
+                      websiteAbandonedRate={this.state.OLXAbandonedRate}
+                      websiteBasketRate={this.state.OLXBasketRate}
+                      websitePurchaseRate={this.state.OLXPurchaseRate}
+                      websiteLast12Months={this.state.last12monthsDataOLX}
+                      totalRevenue={this.state.totalRevenue}
+                    />
+                  );
+                case 'Publi24':
+                  return (
+                    <Website
+                      websiteRevenue={this.state.publi24TotalRevenue}
+                      websiteViews={this.state.publi24Views}
+                      websiteAbandonedRate={this.state.publi24AbandonedRate}
+                      websiteBasketRate={this.state.publi24BasketRate}
+                      websitePurchaseRate={this.state.publi24PurchaseRate}
+                      websiteLast12Months={this.state.last12monthsDataPubli24}
+                      totalRevenue={this.state.totalRevenue}
+                    />
+                  );
+                case 'Okazii':
+                  return (
+                    <Website
+                      websiteRevenue={this.state.okaziiTotalRevenue}
+                      websiteViews={this.state.okaziiViews}
+                      websiteAbandonedRate={this.state.okaziiAbandonedRate}
+                      websiteBasketRate={this.state.okaziiBasketRate}
+                      websitePurchaseRate={this.state.okaziiPurchaseRate}
+                      websiteLast12Months={this.state.last12monthsDataOkazii}
+                      totalRevenue={this.state.totalRevenue}
+                    />
+                  );
+                case 'LaJumate':
+                  return (
+                    <Website
+                      websiteRevenue={this.state.laJumateTotalRevenue}
+                      websiteViews={this.state.laJumateViews}
+                      websiteAbandonedRate={this.state.laJumateAbandonedRate}
+                      websiteBasketRate={this.state.laJumateBasketRate}
+                      websitePurchaseRate={this.state.laJumatePurchaseRate}
+                      websiteLast12Months={this.state.last12monthsDataLaJumate}
+                      totalRevenue={this.state.totalRevenue}
+                    />
+                  );
+              }
+            }}
           />
           <Route
             exact={true}

@@ -4,7 +4,7 @@ import Filter from '../components/Filter';
 
 import LineGraph from '../components/LineGraph';
 import Card from '../components/Card';
-import Pie from '../components/Pie';
+// import Pie from '../components/Pie';
 import Doghnut from '../components/Doghnut';
 
 export default class Website extends Component {
@@ -15,8 +15,23 @@ export default class Website extends Component {
       websiteViews,
       websiteAbandonedRate,
       websiteBasketRate,
-      websitePurchaseRate
+      websitePurchaseRate,
+      websiteLast12Months,
+      totalRevenue
     } = this.props;
+
+    let last12MonthsFinal = [];
+
+    if (websiteLast12Months) {
+      Object.entries(websiteLast12Months).forEach((month) => {
+        let b = new Date(parseInt(month[0]));
+        let monthLabel = `${b.getMonth() + 1}/${b.getFullYear()}`;
+        last12MonthsFinal.push({
+          label: monthLabel,
+          value: month[1]
+        });
+      });
+    }
 
     return (
       <Container>
@@ -34,6 +49,12 @@ export default class Website extends Component {
                 value={websiteRevenue}
                 hasLogo={true}
                 isOlx
+              />
+              <Card
+                label='Procent din totalul venitului'
+                value={parseInt((websiteRevenue / totalRevenue) * 100)}
+                hasLogo={true}
+                isPercentage
               />
               <Card
                 label='Vizualizări Produse'
@@ -69,18 +90,13 @@ export default class Website extends Component {
               </Container>
             </Container>
             <Container className='row'>
-              <LineGraph
-                data={[
-                  { label: 'test', value: 2 },
-                  { label: 'test2', value: 21 }
-                ]}
-              />
-              <Pie
+              <LineGraph data={last12MonthsFinal} />
+              {/* <Pie
                 data={[
                   { label: 'test', value: '2' },
                   { label: 'bla', value: 1 }
                 ]}
-              />
+              /> */}
             </Container>
           </div>
         </Container>
