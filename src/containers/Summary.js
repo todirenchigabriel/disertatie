@@ -17,7 +17,7 @@ export default class Summary extends Component {
       OLXRevenue,
       publi24Revenue,
       laJumateRevenue,
-      totalRevenue,
+      totalRevenueSelectedMonth,
       productViews,
       purchaseRate,
       checkoutRate,
@@ -57,7 +57,7 @@ export default class Summary extends Component {
               hasLogo={true}
               isLajum
             />
-            <Card label='Venit Total' value={totalRevenue} hasLogo={false} />
+            <Card label='Venit Total' value={totalRevenueSelectedMonth} hasLogo={false} />
             <Card
               label='Vizualizări prodse'
               value={productViews}

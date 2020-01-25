@@ -1,0 +1,34 @@
+.buttonwrapper {
+  list-style: none;
+  display: inline-flex;
+  border-radius: 50px;
+  background-color: hsla(0, 0%, 100%, 0.13);
+  padding-left: 0;
+  margin: 0 0 0 20px;
+}
+
+.buttonwrapper li {
+    display: block;
+    float: left;
+    width: 80px;
+}
+
+.buttonwrapper label {
+  display: block;
+  color: #fff;
+  opacity: 1;
+  text-align: center;
+  padding: 4px 10px;
+  margin-bottom: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.buttonwrapper li:first-child {
+    margin-left: 0;
+}
+
+.buttonwrapper li.active label {
+    background-color: #182142;
+    border-radius: 50px;
+}

@@ -6,7 +6,6 @@ import Filter from '../components/Filter';
 import { Container } from '../helpers/styled-components';
 import regions from '../helpers/region-shortcuts';
 
-
 export default class Region extends Component {
   render() {
     const {
@@ -40,7 +39,6 @@ export default class Region extends Component {
       label: 'Altele',
       value: otherSalesPercentage
     });
-
 
     // last12MonthsFinal & ordersByWebsite calculation
     if (last12monthsData && ordersByWebsite) {

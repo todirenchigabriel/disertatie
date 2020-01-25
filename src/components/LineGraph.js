@@ -37,7 +37,7 @@ export default class LineGraph extends Component {
                     theme: 'ecommerce',
                     anchorbgcolor: '#72D7B2',
                     palettecolors: '#72D7B2',
-                    containerBackgroundOpacity: '0'
+                    containerBackgroundOpacity: '0',
                     // baseFontSize: "10"
                   },
                   data
