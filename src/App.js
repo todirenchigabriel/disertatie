@@ -494,6 +494,7 @@ class App extends Component {
                       websitePurchaseRate={this.state.OLXPurchaseRate}
                       websiteLast12Months={this.state.last12monthsDataOLX}
                       totalRevenue={this.state.totalRevenue}
+                      title='OLX'
                     />
                   );
                 case 'Publi24':
@@ -506,6 +507,7 @@ class App extends Component {
                       websitePurchaseRate={this.state.publi24PurchaseRate}
                       websiteLast12Months={this.state.last12monthsDataPubli24}
                       totalRevenue={this.state.totalRevenue}
+                      title='Publi24'
                     />
                   );
                 case 'Okazii':
@@ -518,6 +520,7 @@ class App extends Component {
                       websitePurchaseRate={this.state.okaziiPurchaseRate}
                       websiteLast12Months={this.state.last12monthsDataOkazii}
                       totalRevenue={this.state.totalRevenue}
+                      title='Okazii'
                     />
                   );
                 case 'LaJumate':
@@ -530,6 +533,7 @@ class App extends Component {
                       websitePurchaseRate={this.state.laJumatePurchaseRate}
                       websiteLast12Months={this.state.last12monthsDataLaJumate}
                       totalRevenue={this.state.totalRevenue}
+                      title='LaJumate'
                     />
                   );
               }

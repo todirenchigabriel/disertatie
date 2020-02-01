@@ -9,7 +9,6 @@ import Doghnut from '../components/Doghnut';
 
 export default class Website extends Component {
   render() {
-    const title = 'OLX';
     const {
       websiteRevenue,
       websiteViews,
@@ -17,7 +16,8 @@ export default class Website extends Component {
       websiteBasketRate,
       websitePurchaseRate,
       websiteLast12Months,
-      totalRevenue
+      totalRevenue,
+      title
     } = this.props;
 
     let last12MonthsFinal = [];
@@ -48,7 +48,10 @@ export default class Website extends Component {
                 label='Venit OLX'
                 value={websiteRevenue}
                 hasLogo={true}
-                isOlx
+                isOlx={title === 'OLX' ? true : false}
+                isOkazii={title === 'Okazii' ? true : false}
+                isPubli={title === 'Publi24' ? true : false}
+                isLajum={title === 'LaJumate' ? true : false}
               />
               <Card
                 label='Procent din totalul venitului'
