@@ -68,7 +68,6 @@ export default class Region extends Component {
         value: publi24Orders
       });
     }
-
     return (
       <Container>
         <Filter

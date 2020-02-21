@@ -11,7 +11,6 @@ ReactFC.fcRoot(FusionCharts, charts);
 export default class Pie extends Component {
   render() {
     const { data } = this.props;
-
     return (
       <Container
         className='col-md-8 col-lg-6 is-light-text mb-4'
@@ -28,7 +27,7 @@ export default class Pie extends Component {
                 dataSource: {
                   chart: {
                     caption:
-                      'Proporția vânzărilor pe județul Botoșani din totalul vânzărilor',
+                      `Proporția vânzărilor pe județul ${data[0].label} din totalul vânzărilor`,
                     plottooltext:
                       '<b>$percentValue</b> din totalul comenzilor provin din județul $label',
                     showlegend: '1',

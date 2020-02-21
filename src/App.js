@@ -20,7 +20,10 @@ import Website from './containers/Website';
 
 ReactFC.fcRoot(FusionCharts, Charts, Maps, RomaniaMap);
 
-const url = `https://sheets.googleapis.com/v4/spreadsheets/${config.spreadsheetId}/values:batchGet?ranges=Sheet1&majorDimension=ROWS&key=${config.apiKey}`;
+const url = `https://sheets.googleapis.com/v4/spreadsheets/
+${config.spreadsheetId}
+/values:batchGet?ranges=Sheet1&majorDimension=ROWS
+&key=${config.apiKey}`;
 
 class App extends Component {
   constructor() {
